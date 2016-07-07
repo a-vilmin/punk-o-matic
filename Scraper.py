@@ -17,7 +17,7 @@ class Scraper():
         bd = self.driver.find_element(By.CSS_SELECTOR, "body")
 
         # Wait for page to load
-        sleep(5)
+        sleep(2)
         try:
             i = bd.find_element_by_xpath("//div[@id='main']//ol[@id='items']")
             blog_entries = i.find_elements_by_xpath("//li[@class='item']")
@@ -41,7 +41,17 @@ class Scraper():
     def _zippy_share(self, url):
         self.driver.get(url)
         sleep(1)
-
+        try:
+            link = self.driver.find_element_by_xpath("//body//div[@class='container']" +
+                                                     "//div[@class='outer_main']" +
+                                                     "//div[@class='inner_main']" +
+                                                     "//table//tbody//tr//td//" +
+                                                     "div[@id='lrbox']//div[@class='rig" +
+                                                     "ht']//div//a").get_attribute('href')
+            self.driver.get(link)
+            sleep(4)
+        except NoSuchElementException:
+            print("cant find link")
 
 if __name__ == '__main__':
 
@@ -53,5 +63,4 @@ if __name__ == '__main__':
     chromeOptions.add_experimental_option("prefs", prefs)
 
     test = Scraper(chrome, chromeOptions)
-    test.get_links(site)
-    test.download()
+    test._zippy_share("http://www72.zippyshare.com/v/SUml3bXd/file.html")
