@@ -37,6 +37,8 @@ class Scraper():
                 self._zippy_share(site)
             elif 'bandcamp' in site:
                 continue
+            else:
+                print(site+" is unrecognized url type.")
 
     def _zippy_share(self, url):
         self.driver.get(url)
